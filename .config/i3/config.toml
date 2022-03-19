@@ -1,0 +1,60 @@
+
+theme = "space-villain"
+icons = "awesome5"
+
+[[block]]
+block = "music"
+player= "mpd"
+buttons = ["prev", "play", "next"]
+format = " {combo} "
+on_collapsed_click = "/usr/bin/mpDris2"
+on_click = "pgrep -if \"/usr/bin/mpdris2\" | xargs kill"
+max_width = 21
+
+
+[[block]]
+block = "net"
+device = "enp0s31f6"
+format = "{ip} {speed_down;M*B} {speed_up;M*B}"
+interval = 2
+
+[[block]]
+block = "disk_space"
+path = "/home/poop/"
+format = "{icon} {used} / {total}"
+info_type = "available"
+unit = "TB"
+interval = 20
+warning = 20.0
+alert = 10.0
+
+[[block]]
+block = "memory"
+display_type = "memory"
+format_mem = "{mem_used} /{mem_total}"
+clickable = false
+
+[[block]]
+block = "nvidia_gpu"
+label = ""
+show_memory = false
+interval = 1
+
+[[block]]
+block = "cpu"
+interval = 1
+format = "{utilization} {frequency}"
+
+[[block]]
+block = "load"
+interval = 20 
+format = "{1m} {5m} {15m}"
+
+[[block]]
+block = "sound"
+
+[[block]]
+block = "time"
+interval = 5
+format = "%a %Y-%m-%d %H:%M:%S"
+

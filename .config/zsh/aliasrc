@@ -1,0 +1,29 @@
+alias cleanvim='vim -u NORC'
+alias tmpdir='cd $(mktemp -d)'
+alias tempdir='tmpdir'
+alias ff='firefox'
+
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+
+alias vim='nvim'
+
+if command -v exa >/dev/null 2>&1; then
+    alias ls='exa'
+else
+    alias ls='ls --color=tty'
+fi
+
+alias ip='ip -c'
+alias grep='grep --color=auto --exclude-dir={.git,vendor}'
+alias vi='vim'
+alias vimrc='vim ~/.config/nvim/init.vim'
+alias zshrc='vim ~/.config/zsh/.zshrc'
+alias winboot='sudo systemctl reboot --boot-loader-entry=auto-windows'
+alias scrcpy='scrcpy -Sw'
+alias adbc='adb connect 192.168.1.126 && scrcpy -Sw'
+alias open='xdg-open'

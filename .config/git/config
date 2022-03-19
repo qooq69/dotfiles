@@ -1,0 +1,18 @@
+[core]
+    editor = "nvim"
+[push]
+    default = simple
+[alias]
+    st = status
+    lg = log -p
+    ap = add --patch
+    track = add -N
+[include]
+    path = ~/.config/git/gitcredentials
+[pull]
+    rebase = true
+
+[merge]
+    tool = vimdiff
+[mergetool "vimdiff"]
+    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
