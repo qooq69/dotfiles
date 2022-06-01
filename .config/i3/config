@@ -168,14 +168,20 @@ bindsym $mod+r mode "resize"
 bindsym $mod+Shift+s "exec maim -s -u | xclip -selection clipboard -t image/png -i"
 
 bar {
+    i3bar_command i3bar --transparency
     font pango:monospace Mono, Font Awesome 5 Free, PowerlineSymbols 12
     status_command i3status-rs ~/.config/i3/config.toml
     tray_output primary
+    colors {
+        background #00000000
+        statusline #ffffff00
+        separator #66666600
+    }
 }
 
-bindsym Shift+F12 exec pactl set-source-volume alsa_input.pci-0000_00_1f.3.analog-stereo 1000%
-bindsym F12 exec pactl set-source-volume alsa_input.pci-0000_00_1f.3.analog-stereo 50%
-bindsym Shift+Control+F12 exec pactl set-source-volume alsa_input.pci-0000_00_1f.3.analog-stereo 10000%
+bindsym Shift+F12 exec pactl set-source-volume @DEFAULT_SOURCE@ 1000%
+bindsym F12 exec pactl set-source-volume @DEFAULT_SOURCE@ 100%
+bindsym Shift+Control+F12 exec pactl set-source-volume @DEFAULT_SOURCE@ 10000%
 
 workspace 2 output DP-0
 workspace 4 output DP-0
@@ -199,7 +205,6 @@ for_window [class="Pavucontrol"] floating enable
 for_window [class="PolyMC"] floating enable
 for_window [class="Lutris"] floating enable
 for_window [class="battle.net.exe"] floating enable
-for_window [class="GameOfLife"] floating enable
 assign [class="csgo_linux64"] 5
 assign [class="discord"] 4
 assign [class="Chromium"] 2

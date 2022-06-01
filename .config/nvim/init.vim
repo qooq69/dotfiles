@@ -3,24 +3,34 @@ filetype off
 
 call plug#begin("~/.config/nvim/plugged")
 " Plug 'dense-analysis/ale'
+
 " Fuzzy file finder
 Plug 'ctrlpvim/ctrlp.vim'
+
 " clang-format plugin
 Plug 'rhysd/vim-clang-format'
+
 " completion engine based off of vscode plugins
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 " syntax highlighter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
 " nvim theme that also supports treesitter
 Plug 'marko-cerovac/material.nvim'
 Plug 'nvim-lualine/lualine.nvim'
+
 " Plug 'lervag/vimtex'
+
+" Snippets for coc-snippets
+Plug 'honza/vim-snippets'
 call plug#end()
 
 filetype plugin indent on
 
 syntax on
 
+" lua config {{{
 
 lua << EOF
 require('material').setup({
@@ -104,11 +114,13 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
     },
 
-  indent = {
-    enable = true
-    }
+--  indent = {
+--    enable = true
+--    }
 }
 EOF
+
+" }}}
 
 " Set theme
 let g:material_style = "deep ocean"
@@ -202,6 +214,8 @@ let g:ale_linters = {
 " Python leader-bindings (Space+Key)
 au FileType python nmap <leader>f <Plug>(ale_fix)
 
+au FileType html setlocal ts=2 sw=2 sts=2
+
 let g:ale_python_executable='/usr/bin/python'
 let b:ale_fixers = {
     \ 'python': ['black', 'isort'],
@@ -227,15 +241,30 @@ let g:ctrlp_follow_symlinks = 1
 
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'cpp']
 
-" =================================
-"
-" coc.nvim config
-"
-" =================================
+" hex editor config
+augroup Binary
+  au!
+  au BufReadPre  *.bin let &bin=1
+  au BufReadPost *.bin if &bin | %!xxd -g 1
+  au BufReadPost *.bin set ft=xxd | endif
+  au BufWritePre *.bin if &bin | %!xxd -r
+  au BufWritePre *.bin endif
+  au BufWritePost *.bin if &bin | %!xxd -g 1
+  au BufWritePost *.bin set nomod | endif
+augroup END
 
+augroup filetype_vim
+    autocmd!
+    autocmd FileType vim setlocal foldmethod=marker
+augroup END
+
+" remap za (toggle fold) to zo
+noremap <silent> zo za
+
+" coc.nvim config {{{
 
 let g:coc_enable_locationlist = 0
-let g:coc_global_extensions = ['coc-git', 'coc-clangd']
+let g:coc_global_extensions = ['coc-git', 'coc-clangd', 'coc-snippets']
 
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
@@ -364,20 +393,18 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-" =================================
-"
-" Python config
-"
-" =================================
+
+" }}}
+
+
+" python config {{{
 
 "autocmd filetype python nnoremap <F4> :w <bar> exec '!python3 '.shellescape('%')<CR>
 
+" }}}
 
-" =================================
-"
-" C style languages config
-"
-" =================================
+
+" C style languages config {{{
 
 " clang-format extension options
 autocmd FileType c ClangFormatAutoEnable
@@ -391,7 +418,7 @@ let g:clang_format#style_options = {
              \ "BreakBeforeBraces" : "Stroustrup",
              \ "IndentWidth" : 4,
              \ "ColumnLimit" : 120,
-             \ "Standard" : "C++20" }
+             \ "Standard" : "c++20" }
 
 au FileType cpp nmap <silent> <leader>f :ClangFormat<cr>
 au FileType cpp nmap <silent> <leader>h :CocCommand clangd.switchSourceHeader<CR>
@@ -436,3 +463,5 @@ function! s:compile_run_cpp() abort
     "startinsert
     execute '$'
 endfunction
+
+" }}}

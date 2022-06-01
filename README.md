@@ -30,7 +30,7 @@ $ ./scripts/install.sh
 | | Name | Package | Links |
 |-| ---- | ------- | ----- |
 | **Window Manager** | i3wm | `i3wm` <sup>[Arch](https://archlinux.org/packages/community/x86_64/i3-wm/)</sup> | [GitHub](https://github.com/i3/i3), [Docs](https://i3wm.org/docs/userguide.html)
-| **Status Bar** | i3status-rust | `i3status-rust` <sup>[AUR](https://archlinux.org/packages/community/x86_64/i3status-rust/)</sup> | [GitHub](https://github.com/greshake/i3status-rust), [Docs](https://github.com/greshake/i3status-rust/wiki)
+| **Status Bar** | i3status-rust | `i3status-rust` <sup>[Arch](https://archlinux.org/packages/community/x86_64/i3status-rust/)</sup> | [GitHub](https://github.com/greshake/i3status-rust), [Docs](https://github.com/greshake/i3status-rust/wiki)
 | **Compositor** | picom | `picom` <sup>[Arch](https://archlinux.org/packages/community/x86_64/picom/)</sup> | [GitHub](https://github.com/yshui/picom)
 | **Application Launcher** | dmenu | `dmenu` <sup>[Arch](https://archlinux.org/packages/community/x86_64/dmenu/)</sup> | [Site](https://tools.suckless.org/dmenu/)
 
