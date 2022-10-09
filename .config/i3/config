@@ -186,13 +186,17 @@ bindsym Shift+Control+F12 exec pactl set-source-volume @DEFAULT_SOURCE@ 10000%
 workspace 2 output DP-0
 workspace 4 output DP-0
 workspace 6 output DP-0
+workspace 8 output DP-0
+workspace 10 output DP-0
 workspace 1 output DP-2
 workspace 3 output DP-2
 workspace 5 output DP-2
+workspace 7 output DP-2
 workspace 9 output DP-2
 
 exec --no-startup-id /usr/bin/redshift
 exec --no-startup-id /usr/bin/picom
+exec --no-startup-id /usr/bin/dunst
 
 for_window [class="Qsynth"] floating enable
 for_window [class="Sxiv"] floating enable
@@ -207,10 +211,10 @@ for_window [class="Lutris"] floating enable
 for_window [class="battle.net.exe"] floating enable
 assign [class="csgo_linux64"] 5
 assign [class="discord"] 4
-assign [class="Chromium"] 2
 assign [class="Steam"] 9
 assign [class="PolyMC"] 9
 assign [class="Signal"] 9
+assign [class="thunderbird"] 7
 show_marks yes
 
 focus_follows_mouse no
@@ -218,6 +222,8 @@ focus_follows_mouse no
 focus_on_window_activation none
 
 default_border pixel 1
+
+hide_edge_borders both
 
 # no border nor title bar for floating windows
 default_floating_border pixel 0

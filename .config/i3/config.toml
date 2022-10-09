@@ -58,3 +58,5 @@ block = "time"
 interval = 5
 format = "%a %Y-%m-%d %H:%M:%S"
 
+[[block]]
+block = "notify"

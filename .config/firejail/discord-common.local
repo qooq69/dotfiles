@@ -20,5 +20,6 @@ ipc-namespace
 disable-mnt
 apparmor
 seccomp.block-secondary
-nodbus
 read-only /tmp/.X11-unix
+dbus-user filter
+dbus-user.talk org.freedesktop.Notifications

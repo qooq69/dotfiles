@@ -16,11 +16,25 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " syntax highlighter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
+Plug 'skywind3000/asyncrun.vim'
+
 " nvim theme that also supports treesitter
 Plug 'marko-cerovac/material.nvim'
 Plug 'nvim-lualine/lualine.nvim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 
-" Plug 'lervag/vimtex'
+Plug 'preservim/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
+" opens URI in da browser
+Plug 'tyru/open-browser.vim'
+
+Plug 'navarasu/onedark.nvim'
+
+Plug 'lervag/vimtex'
+
 
 " Snippets for coc-snippets
 Plug 'honza/vim-snippets'
@@ -30,9 +44,64 @@ filetype plugin indent on
 
 syntax on
 
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+
+nnoremap <C-S-tab> :tabprevious<CR>
+nnoremap <C-tab>   :tabnext<CR>
+inoremap <C-S-tab> <Esc>:tabprevious<CR>
+inoremap <C-tab>   <Esc>:tabnext<CR>
+
+" `gx` opens URI or searches keyword under cursor
+let g:netrw_nogx = 1
+nnoremap gx <Plug>(openbrowser-smart-search)
+vnoremap gx <Plug>(openbrowser-smart-search)
+
+let g:vimtex_view_method = 'zathura'
+
+set termguicolors
+
 " lua config {{{
 
 lua << EOF
+local line_ok, feline = pcall(require, "feline")
+require('onedark').setup  {
+    -- Main options --
+    style = 'dark', -- Default theme style. Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer' and 'light'
+    transparent = false,  -- Show/hide background
+    term_colors = true, -- Change terminal color as per the selected theme style
+    ending_tildes = false, -- Show the end-of-buffer tildes. By default they are hidden
+    cmp_itemkind_reverse = false, -- reverse item kind highlights in cmp menu
+
+    -- toggle theme style ---
+    toggle_style_key = nil, -- keybind to toggle theme style. Leave it nil to disable it, or set it to a string, for example "<leader>ts"
+    toggle_style_list = {'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'}, -- List of styles to toggle between
+
+    -- Change code style ---
+    -- Options are italic, bold, underline, none
+    -- You can configure multiple style with comma seperated, For e.g., keywords = 'italic,bold'
+    code_style = {
+        comments = 'italic',
+        keywords = 'none',
+        functions = 'none',
+        strings = 'none',
+        variables = 'none'
+    },
+
+    -- Custom Highlights --
+    colors = {}, -- Override default colors
+    highlights = {}, -- Override highlight groups
+
+    -- Plugins Config --
+    diagnostics = {
+        darker = true, -- darker colors for diagnostic
+        undercurl = true,   -- use undercurl instead of underline for diagnostics
+        background = true,    -- use background color for virtual text
+    },
+}
+
 require('material').setup({
 
 	contrast = {
@@ -79,7 +148,7 @@ require('lualine').setup {
         theme = 'auto',
     },
     sections = {
-        lualine_a = {'%f'},
+        lualine_a = {'%f%m%r%h%w'},
         lualine_b = {'g:coc_status'},
         lualine_c = {'b:coc_current_function'},
         lualine_x = { {'fileformat', icons_enabled = false } },
@@ -90,15 +159,13 @@ require('lualine').setup {
 
 require'nvim-treesitter.configs'.setup {
   -- One of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = { "bash", "c", "cmake", "cpp", "css", "gdscript", "glsl",
-                       "go", "graphql", "hjson", "html", "http", "java",
-                       "javascript", "jsdoc", "json", "kotlin", "latex", "llvm",
-                       "lua", "make", "markdown", "ninja", "python",
-                       "ql", "regex", "rust", "todotxt", "toml", "typescript",
-                       "vim", "yaml", "zig" },
+  ensure_installed = { "c", "cpp" },
 
   -- Install languages synchronously (only applied to `ensure_installed`)
   sync_install = false,
+
+  -- Automatically install missing parsers when entering buffer
+  auto_install = true,
 
   highlight = {
     -- `false` will disable the whole extension
@@ -124,8 +191,7 @@ EOF
 
 " Set theme
 let g:material_style = "deep ocean"
-set termguicolors
-colorscheme material
+colorscheme onedark
 
 " Ignore various cache/vendor folders
 set wildignore+=*/node_modules/*,*/dist/*,*/__pycache__/*,*/venv/*
@@ -236,7 +302,6 @@ let g:ale_set_quickfix = 1
 
 set clipboard=unnamedplus
 
-
 let g:ctrlp_follow_symlinks = 1
 
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'cpp']
@@ -260,6 +325,12 @@ augroup END
 
 " remap za (toggle fold) to zo
 noremap <silent> zo za
+
+
+" automatically compile 
+autocmd BufWritePost *.md :AsyncRun exec '!pandoc-eisvogel '.shellescape('%').' '.shellescape('%:r').'.pdf'<CR>
+autocmd FileType markdown nnoremap <F4> :w <bar> silent exec '!pandoc-eisvogel '.shellescape('%').' '.shellescape('%:r').'.pdf --listings'<CR>
+
 
 " coc.nvim config {{{
 
@@ -426,13 +497,13 @@ au FileType c nmap <silent> <leader>f :ClangFormat<cr>
 au FileType c nmap <silent> <leader>h :CocCommand clangd.switchSourceHeader<CR>
 
 " autocmd filetype c nnoremap <F4> :w <bar> exec '!clang '.shellescape('%').' -o '.shellescape('%:r').' && ./'.shellescape('%:r')<CR>
-autocmd filetype cpp nnoremap <F5> :w <bar> exec '!clang++ -std=c++17 -v '.shellescape('%').' -o '.shellescape('%:r').' && ./'.shellescape('%:r')<CR>
+autocmd FileType cpp nnoremap <F5> :w <bar> exec '!clang++ -std=c++20 -v '.shellescape('%').' -o '.shellescape('%:r').' && ./'.shellescape('%:r')<CR>
 command! -nargs=+ -complete=file T
     \ tab new | setlocal nonumber nolist noswapfile bufhidden=wipe |
     \ call termopen([<f-args>]) |
     \ startinsert
 "clang++ -std=c++17 % -o %:r && ./%:r<CR>
-autocmd filetype cpp nnoremap <silent> <buffer> <F4> :call <SID>compile_run_cpp()<CR>
+autocmd FileType cpp nnoremap <silent> <buffer> <F4> :call <SID>compile_run_cpp()<CR>
 
 function s:create_term_buf(_type, size) abort
     set splitbelow
@@ -449,7 +520,7 @@ function! s:compile_run_cpp() abort
     let src_path = expand('%:p:~')
     let src_noext = expand('%:p:~:r')
     " Build flags
-    let _flag = '-std=c++17'
+    let _flag = '-std=c++2a'
 
     if executable('clang++')
         let prog = 'clang++'

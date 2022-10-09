@@ -5,10 +5,10 @@
     "clangd.enabled": true,
     "json.format.enable": true,
     "coc.preferences.formatOnSaveFiletypes": [
-        "css",
-        "markdown",
-        "json",
-        "python"
+        "*"
+    ],
+    "clangd.fallbackFlags": [
+        "-std=c++2b"
     ],
     "coc.preferences.formatOnType": true,
     "jedi.enable": true,
@@ -40,5 +40,43 @@
         ".venv",
         "__pycache__",
         "venv"
-    ]
+    ],
+    "diagnostic-languageserver.filetypes": {
+        "vim": "vint",
+        "email": "languagetool",
+        "markdown": [
+            "write-good",
+            "markdownlint"
+        ],
+        "sh": "shellcheck",
+        "elixir": [
+            "mix_credo",
+            "mix_credo_compile"
+        ],
+        "eelixir": [
+            "mix_credo",
+            "mix_credo_compile"
+        ],
+        "php": [
+            "phpstan",
+            "psalm"
+        ],
+        "yaml": [
+            "yamllint"
+        ],
+        "cmake": [
+            "cmake-lint",
+            "cmakelint"
+        ],
+        "systemd": "systemd-analyze"
+    },
+    "diagnostic-languageserver.formatFiletypes": {
+        "python": [
+            "black",
+            "isort"
+        ],
+        "lua": "lua-format",
+        "sh": "shfmt",
+        "cmake": "cmake-format"
+    }
 }

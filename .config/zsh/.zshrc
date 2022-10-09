@@ -82,8 +82,9 @@ setopt HIST_IGNORE_SPACE
 autoload -U select-word-style
 select-word-style bash
 
-export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
 export LESSHISTFILE="$XDG_CONFIG_HOME"/less/history
+export PATH="$(yarn global bin):$PATH"
+export DIFFPROG="nvim -d"
 ZSH_THEME="poop"
 
 plugins=(docker vi-mode)
